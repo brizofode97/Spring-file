@@ -1,0 +1,22 @@
+RuntimeException, Exception, IOException, finally
+
+-L'ajout de code dans les parenthèses de "try" avant sont bloc est une fonctionnalité de Java appelée try-with-resource. Cette dernière
+permet de fermer les resources qui implémente l'interface "AutoCloseable" de manière automatique. Ce qui permet d'éviter le risque
+de fuite de resource, une gestion de code en évitant de fermer la ressource sur "finally" et meme en cas d'exception il ferme la resource.
+-Le mot-clé "finally" de Java est un bloc de code associé à un bloc "try" et éventuellement un ou plusieurs "catch". Cette fonctionnalité
+permet d'exécuter du code quelque soit le rapport(qu'une exception est levée ou non) du code dans le "try". Cette fonctionnalité est
+utilisée pour s'assurer que certains ressources, comme les fichiers, les connexions réseaux, les bases de données, etc sont libérés.
+Il vient toujours avec un bloc "try".
+-Le mot-clé "static" en Java est utilisé pour définir des membres(variables, méthodes) d'une classe qui sont associés à la classe elle-meme
+plutot qu'aux instances de la classe. Une variable décclaré "static" est partagée dans toutes les intances de cette classe.
+Une méthode déclarée "static" ne peut pas accéder aux membres non statiques. Un bloc "static" est exécuté une seule fois
+(lors du chargement de la classe) avant la création des objets. En Java, on peut avoir des classes imbriquées; et si la classe interne est
+statique, on peut l'instancier sans intancier la classe externe.
+-Le mot-clé "final" en Jave est utilisé pour resteidre les modifications sur l'élément. Une variable "final" ne peut etre assignée qu'une
+seule fois. Une méthode "final" ne peut pas etre redefinie par une sous classe. Une classe "final" ne peut etre héritée. Un paramètre
+"final" ne peut etre modifié à l'intérieur de la méthode.
+_L'instruction "System.getProperty('home.user')" permet de récupérer le chemin du répertoire personnel du système d'exploitation
+sous lequel l'application est en cours d'éxécution. Mais il faut de tenir en compte qu'on peut rencontrer des erreurs de restrictions.
+-Exception et RuntimeException;
+-Les techniques OCR(Reconnaissance Optique de Caratères) permettent de reconnaitre
+d'extraire du texte à partir d'une image.

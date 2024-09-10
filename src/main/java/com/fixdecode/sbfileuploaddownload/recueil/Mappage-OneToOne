@@ -1,0 +1,111 @@
+Supposons qu'on est une ralation oneToOne pour un utilisateur et une addresse mail.
+Pour le mappage pour une relation oneToOne, on peut avoir trois cas :
+
+1er cas : Modélisation avec une clé étrangère
+Pour ce cas, nous avons la présence de l'une des clé primaire dans l'autre table.
+L'implémentation :
+//_____________
+@Entity
+@Table(name = "user")
+public class User{
+    @Id
+    @GeneratedValue(strategy = GenerationType.Auto)
+    private Long id;
+    ...
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
+
+}
+@Entity
+@Table(name = "address")
+public class Address{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    ...
+    @OneToOne(mappedBy = "address")
+    private User user;
+
+}
+//--------------
+Lorsque la relation est bidirectionnelle, on ajoute le "OneToOne" au niveau du coté non propriètaire. Notons que l'entité qui possède la
+clé étrangère est le propriétère de la relation et l'autre est le non propriétère de la relation.
+
+2ème : Modéisation par une clé primaire partagée
+Cette approche consiste à ce que l'entité esclave(dépendante) utilise la clé primaire de l'entité maitre(principale) comme sa clé primaire.
+L'implémentation :
+//------------------
+@Entity
+@Table(name = "user")
+public class User{
+    @Id
+    @GeneratedVaue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Address address
+
+}
+
+@Entity
+@Table(name = "address")
+public class Address{
+    @Id
+    @private Long id;
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "user_id")
+    private User user;
+
+}
+//----------------------
+L'attribut "mappedBy" est du coté du "user" puisque c'est l'entité "Address" qui a la clé étrangère.
+L'annotation "@PrimaryKeyJoinColumn" indique la clé primaire de l'utilisateur "User" sera utilisé comme valeur de clé étrangère
+pour l'entité "Address" associée.
+On définit un "id" sur l'entité "Address" mais cela fait référence à la clé primaire de l'entité "User".
+L'annotation "@MapsId" indique que les valeurs de la clé primaire seront copiées à partir de l'entité "User".
+
+3ième cas : Modélisation ave une table de jointure
+Les mappages un-à-un peuvent etre de deux types : facultatifs ou obligatoires. Les deux premiers que nous avons abordés sont obligatoires.
+Donc si on a un élément qui n'est lié à aucun autre élément sur l'autre table, on a une valeur nulle. Pour éviter cela, on adapte le
+troisième cas.
+Prenons l'exemple d'un employé et un poste de travail. Un employé peut avoir un ou zéro poste de travail et vice versa.
+L'implémentation
+//--------------------------------
+@Entity
+@Table(name = "employee")
+private class Employee{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    ...
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(name = "empoyee_workStation",
+        @JoinColumns = {
+            @JoinColumn(name = "employe_id", referencedColumnName = "id")
+        },
+        @inverseJoinColumns = {
+            @JoinColumn(name = "workStation_id", referencedColumnName = "id")
+        }
+    )
+    private WorkStation workStation;
+}
+
+@Entity
+@Table(name = "WorkStation")
+public class WorkStation{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    ...
+    @OneToOne(mappedBy = "workStation")
+    private Employee employee;
+}
+
+L'annotation "@JoinTable" indique à Hibernate d'utiliser la stratégie de la table de jointure tout en conservant la relation.
+Emplloyee est propriétaire de cette relation car on définit l'annotation de table sur celle-ci.
+
+
